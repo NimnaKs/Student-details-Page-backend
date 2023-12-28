@@ -58,14 +58,26 @@ public class Student extends HttpServlet {
         } else if ("getLastStudentId".equals(action)) {
             getLastStudentId(req,resp);
         } else if ("getStudent".equals(action)) {
-            getStudent();
+            var studentId = req.getParameter("studentId");
+            getStudent(req,resp,studentId);
         }else{
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid action parameter");
         }
 
     }
 
-    private void getStudent() {
+    private void getStudent(HttpServletRequest req, HttpServletResponse resp, String studentId) {
+        var dbProcess = new DBProcess();
+        StudentDTO studentDTO = dbProcess.getStudent(connection , studentId);
+        Jsonb jsonb = JsonbBuilder.create();
+        try {
+            var json = jsonb.toJson(studentDTO);
+            resp.setContentType("application/json");
+            resp.getWriter().write(json);
+        } catch (IOException e) {
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            throw new RuntimeException(e);
+        }
     }
 
 

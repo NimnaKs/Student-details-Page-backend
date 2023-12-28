@@ -115,4 +115,31 @@ public class DBProcess {
         }
         return null;
     }
+
+    public StudentDTO getStudent(Connection connection, String studentId) {
+
+        String get_student = "SELECT student_id, first_name, last_name,contact_number,email, address, program, batch_no FROM student WHERE student_id = ?;";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(get_student);
+            preparedStatement.setString(1,studentId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                return new StudentDTO(
+                        resultSet.getString("student_id"),
+                        resultSet.getString("first_name"),
+                        resultSet.getString("last_name"),
+                        resultSet.getString("contact_number"),
+                        resultSet.getString("email"),
+                        resultSet.getString("address"),
+                        resultSet.getString("program"),
+                        resultSet.getInt("batch_no")
+                );
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return null;
+    }
 }
