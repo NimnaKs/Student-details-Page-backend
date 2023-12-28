@@ -151,20 +151,17 @@ public class Student extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if(req.getContentType() != null && req.getContentType().toLowerCase().startsWith("application/json")){
-            Jsonb jsonb = JsonbBuilder.create();
-            StudentDTO studentDTO = jsonb.fromJson(req.getReader(), StudentDTO.class);
-            var dbProcess = new DBProcess();
-            boolean result = dbProcess.deleteStudent(studentDTO, connection);
-            if (result) {
-                resp.setStatus(HttpServletResponse.SC_OK);
-                resp.getWriter().write("Student information delete successfully.");
-            } else {
-                resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to delete student information.");
-            }
-        }else{
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+
+        var studentId = req.getParameter("studentId");
+        var dbProcess = new DBProcess();
+        boolean result = dbProcess.deleteStudent(studentId, connection);
+        if (result) {
+            resp.setStatus(HttpServletResponse.SC_OK);
+            resp.getWriter().write("Student information delete successfully.");
+        } else {
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to delete student information.");
         }
+
     }
 
 }

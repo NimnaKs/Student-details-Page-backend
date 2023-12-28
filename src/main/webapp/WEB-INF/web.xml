@@ -5,6 +5,6 @@
          version="5.0">
     <context-param>
         <param-name>origin</param-name>
-        <param-value>http://127.0.0.1:5500</param-value>
+        <param-value>http://127.0.0.1:5501</param-value>
     </context-param>
 </web-app>

@@ -51,12 +51,12 @@ public class DBProcess {
         }
     }
 
-    public boolean deleteStudent(StudentDTO studentDTO, Connection connection) {
+    public boolean deleteStudent(String studentId, Connection connection) {
         try {
 
             String delete_student = "DELETE FROM Student WHERE student_id = ?;";
             var preparedStatement = connection.prepareStatement(delete_student);
-            preparedStatement.setString(1,studentDTO.getStudentId());
+            preparedStatement.setString(1,studentId);
 
             return preparedStatement.executeUpdate() != 0;
 
