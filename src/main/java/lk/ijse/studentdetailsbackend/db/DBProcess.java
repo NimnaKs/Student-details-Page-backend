@@ -3,7 +3,9 @@ package lk.ijse.studentdetailsbackend.db;
 import lk.ijse.studentdetailsbackend.dto.StudentDTO;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class DBProcess {
     public boolean saveStudent(StudentDTO studentDTO, Connection connection) {
@@ -60,5 +62,39 @@ public class DBProcess {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public ArrayList<StudentDTO> getAllStudent(Connection connection) {
+
+        try {
+            String get_all = "SELECT student_id, first_name, last_name,contact_number,email, address, program, batch_no FROM student;";
+            var preparedStatement = connection.prepareStatement(get_all);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            ArrayList<StudentDTO> studentDTOS = new ArrayList<>();
+
+            while(resultSet.next()){
+
+                StudentDTO studentDTO = new StudentDTO(
+                        resultSet.getString("student_id"),
+                        resultSet.getString("first_name"),
+                        resultSet.getString("last_name"),
+                        resultSet.getString("contact_number"),
+                        resultSet.getString("email"),
+                        resultSet.getString("address"),
+                        resultSet.getString("program"),
+                        resultSet.getInt("batch_no")
+                );
+                studentDTOS.add(studentDTO);
+
+            }
+
+            return studentDTOS;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }

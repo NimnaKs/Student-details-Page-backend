@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 @WebServlet(
         name = "student",
@@ -49,6 +50,42 @@ public class Student extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        var action = req.getParameter("action");
+
+        if("getAllStudents".equals(action)){
+            getAllStudents(req,resp);
+        } else if ("getLastStudentId".equals(action)) {
+            getLastStudentId();
+        } else if ("getStudent".equals(action)) {
+            getStudent();
+        }else{
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid action parameter");
+        }
+
+    }
+
+    private void getStudent() {
+    }
+
+
+    private void getAllStudents(HttpServletRequest req, HttpServletResponse resp) {
+        var dbProcess = new DBProcess();
+        ArrayList<StudentDTO> allStudent = dbProcess.getAllStudent(connection);
+
+        Jsonb jsonb = JsonbBuilder.create();
+
+        try {
+            var json = jsonb.toJson(allStudent);
+            resp.setContentType("application/json");
+            resp.getWriter().write(json);
+        } catch (IOException e) {
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void getLastStudentId() {
 
     }
 
