@@ -3,6 +3,7 @@ package lk.ijse.studentdetailsbackend.db;
 import lk.ijse.studentdetailsbackend.dto.StudentDTO;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -96,5 +97,22 @@ public class DBProcess {
             throw new RuntimeException(e);
         }
 
+    }
+
+    public String getLastStudentId(Connection connection) {
+
+        String get_last_stud_id = "SELECT MAX(student_id) as last_student_id FROM student;";
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(get_last_stud_id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()){
+                return "stu-"+String.format("%03d",Integer.parseInt(resultSet.getString("last_student_id").substring(4))+1);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
     }
 }

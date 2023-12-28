@@ -56,7 +56,7 @@ public class Student extends HttpServlet {
         if("getAllStudents".equals(action)){
             getAllStudents(req,resp);
         } else if ("getLastStudentId".equals(action)) {
-            getLastStudentId();
+            getLastStudentId(req,resp);
         } else if ("getStudent".equals(action)) {
             getStudent();
         }else{
@@ -85,8 +85,18 @@ public class Student extends HttpServlet {
         }
     }
 
-    private void getLastStudentId() {
-
+    private void getLastStudentId(HttpServletRequest req, HttpServletResponse resp) {
+        var dbProcess = new DBProcess();
+        var last_stud_id = dbProcess.getLastStudentId(connection);
+        Jsonb jsonb = JsonbBuilder.create();
+        try {
+            String json = jsonb.toJson(last_stud_id);
+            resp.setContentType("application/json");
+            resp.getWriter().write(json);
+        } catch (IOException e) {
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
