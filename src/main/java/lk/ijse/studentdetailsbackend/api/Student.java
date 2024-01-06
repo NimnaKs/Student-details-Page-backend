@@ -11,6 +11,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import lk.ijse.studentdetailsbackend.db.DBProcess;
 import lk.ijse.studentdetailsbackend.dto.StudentDTO;
 
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -35,7 +38,7 @@ public class Student extends HttpServlet {
     @Override
     public void init() throws ServletException {
 
-        var user = getServletConfig().getInitParameter("db-user");
+        /*var user = getServletConfig().getInitParameter("db-user");
         var password = getServletConfig().getInitParameter("db-pw");
         var url = getServletConfig().getInitParameter("db-url");
 
@@ -43,6 +46,15 @@ public class Student extends HttpServlet {
             Class.forName(getServletConfig().getInitParameter("db-class"));
             this.connection = DriverManager.getConnection(url, user, password);
         } catch (ClassNotFoundException | SQLException e) {
+            throw new RuntimeException(e);
+        }*/
+
+        try {
+            var ctx = new InitialContext();
+            DataSource pool = (DataSource) ctx.lookup("java:comp/env/jdbc/studentPage");
+            System.out.println(pool);
+            this.connection = pool.getConnection();
+        } catch (NamingException | SQLException e) {
             throw new RuntimeException(e);
         }
 

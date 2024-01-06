@@ -17,10 +17,16 @@
     </filter>
     <filter-mapping>
         <filter-name>SecurityFilter</filter-name>
-        <url-pattern>"/*"</url-pattern>
+        <url-pattern>/*</url-pattern>
     </filter-mapping>
     <filter-mapping>
         <filter-name>CROSFilter</filter-name>
-        <url-pattern>"/*"</url-pattern>
+        <url-pattern>/*</url-pattern>
     </filter-mapping>
+    <resource-ref>
+        <description>DB Connection</description>
+        <res-ref-name>jdbc/studentPage</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+        <res-auth>Container</res-auth>
+    </resource-ref>
 </web-app>
