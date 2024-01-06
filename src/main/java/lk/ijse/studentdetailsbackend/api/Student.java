@@ -54,6 +54,7 @@ public class Student extends HttpServlet {
             DataSource pool = (DataSource) ctx.lookup("java:comp/env/jdbc/studentPage");
             System.out.println(pool);
             this.connection = pool.getConnection();
+            System.out.println(connection);
         } catch (NamingException | SQLException e) {
             throw new RuntimeException(e);
         }
