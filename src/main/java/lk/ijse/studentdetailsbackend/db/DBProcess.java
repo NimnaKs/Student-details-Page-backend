@@ -1,12 +1,16 @@
 package lk.ijse.studentdetailsbackend.db;
 
+import com.mysql.cj.log.LogFactory;
 import lk.ijse.studentdetailsbackend.dto.StudentDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
 
 public class DBProcess {
     public boolean saveStudent(StudentDTO studentDTO, Connection connection) {

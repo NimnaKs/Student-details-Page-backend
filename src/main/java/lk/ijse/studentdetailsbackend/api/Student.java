@@ -10,6 +10,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lk.ijse.studentdetailsbackend.db.DBProcess;
 import lk.ijse.studentdetailsbackend.dto.StudentDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -33,6 +35,7 @@ import java.util.ArrayList;
 
 public class Student extends HttpServlet {
 
+    final static Logger logger = LoggerFactory.getLogger(Student.class);
     Connection connection;
 
     @Override
@@ -58,6 +61,8 @@ public class Student extends HttpServlet {
         } catch (NamingException | SQLException e) {
             throw new RuntimeException(e);
         }
+
+        logger.info("Init the Servlet");
 
     }
 
